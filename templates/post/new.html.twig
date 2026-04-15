@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau post{% endblock %}
+
+{% block body %}
+    <h1>Nouveau post</h1>
+
+    <div class="card">
+        {{ form_start(form) }}
+        {{ form_row(form.content) }}
+        <button type="submit">Publier</button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+

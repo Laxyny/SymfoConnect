@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <h1>Derniers posts</h1>
+
+    {% if posts is empty %}
+        <p class="muted">Aucun post pour le moment.</p>
+    {% endif %}
+
+    {% for post in posts %}
+        <article class="card">
+            <div class="muted">
+                <a href="{{ path('app_profile_show', { username: post.author.username }) }}">{{ post.author.username }}</a>
+                <span>·</span>
+                <span>{{ post.createdAt|date('d/m/Y H:i') }}</span>
+            </div>
+            <p>{{ post.content }}</p>
+        </article>
+    {% endfor %}
+{% endblock %}
