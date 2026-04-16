@@ -7,9 +7,11 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ProfileController extends AbstractController
 {
+    #[IsGranted('ROLE_USER')]
     #[Route('/profil/{username}', name: 'app_profile_show')]
     public function show(string $username, UserRepository $userRepository, PostRepository $postRepository): Response
     {

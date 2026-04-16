@@ -23,7 +23,7 @@ final class PostController extends AbstractController
         }
 
         if (!$author instanceof \App\Entity\User) {
-            $this->addFlash('danger', 'Aucun utilisateur en base. Crée un utilisateur puis réessaie.');
+            $this->addFlash('danger', 'Aucun utilisateur dans la BDD.');
 
             return $this->redirectToRoute('app_home');
         }
