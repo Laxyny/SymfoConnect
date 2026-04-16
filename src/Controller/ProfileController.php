@@ -76,7 +76,7 @@ final class ProfileController extends AbstractController
         }
 
         if ($viewer->getId() === $target->getId()) {
-            $this->addFlash('danger', 'Tu ne peux pas te suivre toi-même.');
+            $this->addFlash('danger', 'Vous ne pouvez pas vous suivre vous-même.');
             return $this->redirectToRoute('app_profile_show', ['username' => $username]);
         }
 
@@ -86,7 +86,7 @@ final class ProfileController extends AbstractController
             $notification = new Notification();
             $notification->setRecipient($target);
             $notification->setType('follow');
-            $notification->setContent($viewer->getUsername() . ' a commencé à te suivre.');
+            $notification->setContent($viewer->getUsername() . ' a commencé à vous suivre.');
 
             $entityManager->persist($notification);
             $entityManager->flush();

@@ -28,21 +28,21 @@
                 {{ form_start(editForm) }}
                 {{ form_row(editForm.bio, { label: 'Bio' }) }}
                 {{ form_row(editForm.avatarUrl, { label: 'URL avatar' }) }}
-                <button type="submit">Enregistrer</button>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
                 {{ form_end(editForm) }}
             </div>
         {% endif %}
         {% if app.user %}
             {% if app.user.id != profileUser.id %}
                 {% if isFollowing %}
-                    <form method="post" action="{{ path('app_profile_unfollow', { username: profileUser.username }) }}">
+                    <form method="post" action="{{ path('app_profile_unfollow', { username: profileUser.username }) }}" class="inline-form">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('unfollow' ~ profileUser.id) }}">
-                        <button type="submit">Ne plus suivre</button>
+                        <button type="submit" class="btn btn-secondary">Ne plus suivre</button>
                     </form>
                 {% else %}
-                    <form method="post" action="{{ path('app_profile_follow', { username: profileUser.username }) }}">
+                    <form method="post" action="{{ path('app_profile_follow', { username: profileUser.username }) }}" class="inline-form">
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('follow' ~ profileUser.id) }}">
-                        <button type="submit">Suivre</button>
+                        <button type="submit" class="btn btn-primary">Suivre</button>
                     </form>
                 {% endif %}
             {% endif %}
@@ -56,32 +56,37 @@
 
     {% for post in posts %}
         <article class="card">
-            <div class="muted">{{ post.createdAt|date('d/m/Y H:i') }}</div>
             <p>{{ post.content }}</p>
 
-            <div class="muted">
-                <span>{{ post.likedBy|length }} likes</span>
-                {% if app.user %}
-                    {% set hasLiked = false %}
-                    {% for u in post.likedBy %}
-                        {% if u.id == app.user.id %}
-                            {% set hasLiked = true %}
-                        {% endif %}
-                    {% endfor %}
+            <div class="post-footer">
+                <div class="muted action-row">
+                    <span>{{ post.likedBy|length }} likes</span>
+                    {% if app.user %}
+                        {% set hasLiked = false %}
+                        {% for u in post.likedBy %}
+                            {% if u.id == app.user.id %}
+                                {% set hasLiked = true %}
+                            {% endif %}
+                        {% endfor %}
 
-                    <form method="post" action="{{ path('app_post_like_toggle', { id: post.id }) }}" style="display: inline;">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('like' ~ post.id) }}">
-                        <button type="submit">{{ hasLiked ? 'Ne plus liker' : 'Liker' }}</button>
-                    </form>
-                {% endif %}
+                        <form method="post" action="{{ path('app_post_like_toggle', { id: post.id }) }}" class="inline-form">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('like' ~ post.id) }}">
+                            <button type="submit" class="btn {{ hasLiked ? 'btn-secondary' : 'btn-primary' }}">
+                                {{ hasLiked ? 'Ne plus liker' : 'Liker' }}
+                            </button>
+                        </form>
+                    {% endif %}
+
+                    {% if is_granted('POST_DELETE', post) %}
+                        <form method="post" action="{{ path('app_post_delete', { id: post.id }) }}" class="inline-form">
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                            <button type="submit" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="muted post-date">{{ post.createdAt|date('d/m/Y H:i') }}</div>
             </div>
-
-            {% if is_granted('POST_DELETE', post) %}
-                <form method="post" action="{{ path('app_post_delete', { id: post.id }) }}" style="display: inline;">
-                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete' ~ post.id) }}">
-                    <button type="submit">Supprimer</button>
-                </form>
-            {% endif %}
         </article>
     {% endfor %}
 {% endblock %}
