@@ -6,20 +6,136 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22><rect width=%2216%22 height=%2216%22 fill=%22%23000%22 /></svg>">
         {% block stylesheets %}
             <style>
-                body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #f6f7fb; color: #111; }
-                .container { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
-                header { background: #fff; border-bottom: 1px solid #e6e8ef; }
-                nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px; max-width: 960px; margin: 0 auto; }
-                nav a { color: #111; text-decoration: none; font-weight: 600; }
-                nav .links { display: flex; gap: 12px; align-items: center; }
-                .flash { padding: 10px 12px; border-radius: 8px; margin: 12px 0; }
-                .flash-success { background: #e7f7ee; border: 1px solid #bfe8d0; }
-                .flash-danger { background: #fdeaea; border: 1px solid #f4bcbc; }
-                .card { background: #fff; border: 1px solid #e6e8ef; border-radius: 12px; padding: 14px; margin: 12px 0; }
-                .muted { color: #666; font-size: 14px; }
-                textarea, input { width: 100%; padding: 10px 12px; border: 1px solid #d7dbe6; border-radius: 10px; box-sizing: border-box; }
-                button { background: #111; color: #fff; border: 0; border-radius: 10px; padding: 10px 14px; font-weight: 600; cursor: pointer; }
-                button:hover { opacity: 0.9; }
+                :root{
+                    --bg: #f6f7fb;
+                    --surface: #ffffff;
+                    --text: #0f172a;
+                    --muted: #64748b;
+                    --border: #e6e8ef;
+                    --shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+                    --radius: 14px;
+                    --radius-sm: 10px;
+                    --ring: 0 0 0 4px rgba(59, 130, 246, 0.18);
+                    --primary: #0f172a;
+                    --primary-hover: #111c34;
+                    --success-bg: #e7f7ee;
+                    --success-border: #bfe8d0;
+                    --danger-bg: #fdeaea;
+                    --danger-border: #f4bcbc;
+                }
+
+                *{ box-sizing: border-box; }
+                html, body{ height: 100%; }
+                body{
+                    margin: 0;
+                    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+                    color: var(--text);
+                    background: linear-gradient(180deg, #eef2ff 0%, var(--bg) 55%, var(--bg) 100%);
+                    line-height: 1.45;
+                }
+
+                .container{
+                    max-width: 980px;
+                    margin: 0 auto;
+                    padding: 28px 16px;
+                }
+
+                header{
+                    background: rgba(255, 255, 255, 0.85);
+                    border-bottom: 1px solid var(--border);
+                    backdrop-filter: blur(10px);
+                    position: sticky;
+                    top: 0;
+                    z-index: 10;
+                }
+
+                nav{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 16px;
+                    padding: 14px 16px;
+                    max-width: 980px;
+                    margin: 0 auto;
+                }
+
+                nav a{
+                    color: var(--text);
+                    text-decoration: none;
+                    font-weight: 650;
+                }
+
+                nav a:hover{ text-decoration: underline; text-underline-offset: 4px; }
+                nav a:focus-visible{ outline: none; box-shadow: var(--ring); border-radius: 8px; }
+
+                nav .links{
+                    display: flex;
+                    gap: 12px;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    justify-content: flex-end;
+                }
+
+                .flash{
+                    padding: 12px 14px;
+                    border-radius: var(--radius-sm);
+                    margin: 12px 0;
+                    border: 1px solid var(--border);
+                    background: var(--surface);
+                    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03);
+                }
+
+                .flash-success{ background: var(--success-bg); border-color: var(--success-border); }
+                .flash-danger{ background: var(--danger-bg); border-color: var(--danger-border); }
+
+                .card{
+                    background: var(--surface);
+                    border: 1px solid var(--border);
+                    border-radius: var(--radius);
+                    padding: 16px;
+                    margin: 12px 0;
+                    box-shadow: var(--shadow);
+                }
+
+                .muted{ color: var(--muted); font-size: 14px; font-weight: 500; }
+
+                input, textarea{
+                    width: 100%;
+                    padding: 10px 12px;
+                    border: 1px solid #d7dbe6;
+                    border-radius: var(--radius-sm);
+                    background: var(--surface);
+                    color: var(--text);
+                }
+
+                textarea{ resize: vertical; min-height: 110px; }
+
+                input:focus, textarea:focus{
+                    outline: none;
+                    border-color: rgba(59, 130, 246, 0.55);
+                    box-shadow: var(--ring);
+                }
+
+                button{
+                    appearance: none;
+                    background: var(--primary);
+                    color: #fff;
+                    border: 0;
+                    border-radius: var(--radius-sm);
+                    padding: 10px 14px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: transform 120ms ease, background 120ms ease, opacity 120ms ease;
+                }
+
+                button:hover{ background: var(--primary-hover); }
+                button:active{ transform: translateY(1px); }
+                button:focus-visible{ outline: none; box-shadow: var(--ring); }
+
+                @media (max-width: 640px){
+                    .container{ padding: 20px 14px; }
+                    nav{ padding: 12px 14px; }
+                }
             </style>
         {% endblock %}
 
@@ -39,7 +155,15 @@
             <nav>
                 <a href="{{ path('app_home') }}">SymfoConnect</a>
                 <div class="links">
-                    <a href="{{ path('app_post_new') }}">Nouveau post</a>
+                    {% if app.user %}
+                        <a href="{{ path('app_profile_show', { username: app.user.username }) }}">{{ app.user.username }}</a>
+                        <a href="{{ path('app_feed') }}">Feed</a>
+                        <a href="{{ path('app_post_new') }}">Nouveau post</a>
+                        <a href="{{ path('app_logout') }}">Déconnexion</a>
+                    {% else %}
+                        <a href="{{ path('app_login') }}">Connexion</a>
+                        <a href="{{ path('app_register') }}">Inscription</a>
+                    {% endif %}
                 </div>
             </nav>
         </header>

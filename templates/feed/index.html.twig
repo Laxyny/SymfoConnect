@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Feed{% endblock %}
 
 {% block body %}
-    <h1>Derniers posts</h1>
+    <h1>Fil d'actualité</h1>
+
+    {% if followingCount == 0 %}
+        <p class="muted">Vous ne suivez personne pour l'instant. Allez sur un profil et commencez à suivre des gens.</p>
+    {% endif %}
 
     {% if posts is empty %}
-        <p class="muted">Aucun post pour le moment.</p>
+        <p class="muted">Aucun post à afficher.</p>
     {% endif %}
 
     {% for post in posts %}
@@ -20,19 +24,17 @@
 
             <div class="muted">
                 <span>{{ post.likedBy|length }} likes</span>
-                {% if app.user %}
-                    {% set hasLiked = false %}
-                    {% for u in post.likedBy %}
-                        {% if u.id == app.user.id %}
-                            {% set hasLiked = true %}
-                        {% endif %}
-                    {% endfor %}
+                {% set hasLiked = false %}
+                {% for u in post.likedBy %}
+                    {% if u.id == app.user.id %}
+                        {% set hasLiked = true %}
+                    {% endif %}
+                {% endfor %}
 
-                    <form method="post" action="{{ path('app_post_like_toggle', { id: post.id }) }}" style="display: inline;">
-                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('like' ~ post.id) }}">
-                        <button type="submit">{{ hasLiked ? 'Ne plus liker' : 'Liker' }}</button>
-                    </form>
-                {% endif %}
+                <form method="post" action="{{ path('app_post_like_toggle', { id: post.id }) }}" style="display: inline;">
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('like' ~ post.id) }}">
+                    <button type="submit">{{ hasLiked ? 'Ne plus liker' : 'Liker' }}</button>
+                </form>
             </div>
 
             {% if is_granted('POST_DELETE', post) %}
@@ -44,3 +46,4 @@
         </article>
     {% endfor %}
 {% endblock %}
+

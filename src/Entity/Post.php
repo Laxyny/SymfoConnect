@@ -26,9 +26,6 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $author = null;
 
-    /**
-     * @var Collection<int, User>
-     */
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedPosts')]
     private Collection $likedBy;
 
@@ -79,9 +76,6 @@ class Post
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
     public function getLikedBy(): Collection
     {
         return $this->likedBy;

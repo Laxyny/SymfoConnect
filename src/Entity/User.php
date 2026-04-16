@@ -45,21 +45,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'author', orphanRemoval: true)]
     private Collection $posts;
 
-    /**
-     * @var Collection<int, self>
-     */
     #[ORM\ManyToMany(targetEntity: self::class, inversedBy: 'followers')]
     private Collection $following;
 
-    /**
-     * @var Collection<int, self>
-     */
     #[ORM\ManyToMany(targetEntity: self::class, mappedBy: 'following')]
     private Collection $followers;
 
-    /**
-     * @var Collection<int, Post>
-     */
     #[ORM\ManyToMany(targetEntity: Post::class, mappedBy: 'likedBy')]
     private Collection $likedPosts;
 
@@ -205,9 +196,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
     public function getFollowing(): Collection
     {
         return $this->following;
@@ -229,9 +217,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, self>
-     */
     public function getFollowers(): Collection
     {
         return $this->followers;
@@ -256,9 +241,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Post>
-     */
     public function getLikedPosts(): Collection
     {
         return $this->likedPosts;
