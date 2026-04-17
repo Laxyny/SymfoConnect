@@ -51,6 +51,7 @@ class Post
     private ?User $author = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedPosts')]
+    #[ORM\JoinTable(name: 'post_likes')]
     #[Groups(['post:read'])]
     private Collection $likedBy;
 
