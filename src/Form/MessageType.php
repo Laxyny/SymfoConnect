@@ -17,7 +17,7 @@ final class MessageType extends AbstractType
         $builder->add('content', TextareaType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['min' => 1, 'max' => 2000]),
+                new Length(min: 1, max: 2000),
             ],
             'attr' => [
                 'rows' => 4,

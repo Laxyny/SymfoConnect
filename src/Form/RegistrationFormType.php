@@ -23,7 +23,7 @@ class RegistrationFormType extends AbstractType
             ->add('username', TextType::class, [
                 'constraints' => [
                     new NotBlank(),
-                    new Length(['min' => 3, 'max' => 50]),
+                    new Length(min: 3, max: 50),
                 ],
             ])
             ->add('email', EmailType::class, [

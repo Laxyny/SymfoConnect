@@ -17,7 +17,7 @@ final class PostType extends AbstractType
         $builder->add('content', TextareaType::class, [
             'constraints' => [
                 new NotBlank(),
-                new Length(['min' => 5]),
+                new Length(min: 5),
             ],
             'attr' => [
                 'rows' => 4,

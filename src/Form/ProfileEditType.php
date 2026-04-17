@@ -19,7 +19,7 @@ final class ProfileEditType extends AbstractType
             ->add('bio', TextareaType::class, [
                 'required' => false,
                 'constraints' => [
-                    new Length(['max' => 500]),
+                    new Length(max: 500),
                 ],
                 'attr' => [
                     'rows' => 4,
