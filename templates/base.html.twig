@@ -76,6 +76,42 @@
                     justify-content: flex-end;
                 }
 
+                .nav-brand{
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .nav-icon{
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 999px;
+                    border: 1px solid #d7dbe6;
+                    background: rgba(255, 255, 255, 0.75);
+                    box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+                }
+
+                .nav-icon:hover{
+                    background: #f8fafc;
+                    text-decoration: none;
+                }
+
+                .nav-icon svg{
+                    width: 18px;
+                    height: 18px;
+                }
+
+                .nav-label{
+                    display: none;
+                }
+
+                @media (max-width: 780px){
+                    .nav-label{ display: none; }
+                }
+
                 .flash{
                     padding: 12px 14px;
                     border-radius: var(--radius-sm);
@@ -303,16 +339,55 @@
     <body>
         <header>
             <nav>
-                <a href="{{ path('app_home') }}">SymfoConnect</a>
+                <a class="nav-brand" href="{{ path('app_home') }}" aria-label="Accueil SymfoConnect">
+                    <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                        <path d="M12 2.5c-4.7 0-8.5 3.6-8.5 8.1 0 3 1.7 5.7 4.3 7.1V21l2.2-1.1c.6.1 1.2.2 2 .2 4.7 0 8.5-3.6 8.5-8.1S16.7 2.5 12 2.5Zm0 14.1c-.7 0-1.3-.1-1.8-.2l-.5-.1-1.3.7v-1.2l-.4-.2c-2.1-1-3.4-3.1-3.4-5.4 0-3.4 3.1-6.2 6.9-6.2s6.9 2.8 6.9 6.2-3.1 6.2-6.9 6.2Z" fill="currentColor"/>
+                    </svg>
+                    <span>SymfoConnect</span>
+                </a>
                 <div class="links">
                     {% if app.user %}
-                        <a href="{{ path('app_profile_show', { username: app.user.username }) }}">{{ app.user.username }}</a>
-                        <a href="{{ path('app_feed') }}">Feed</a>
-                        <a href="{{ path('app_post_new') }}">Nouveau post</a>
-                        <a href="{{ path('app_logout') }}">Déconnexion</a>
+                        <a class="nav-icon" href="{{ path('app_profile_show', { username: app.user.username }) }}" aria-label="Mon profil">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M12 12.2c2.5 0 4.6-2 4.6-4.5S14.5 3.2 12 3.2 7.4 5.2 7.4 7.7s2.1 4.5 4.6 4.5Zm0 2.2c-4.2 0-7.6 2.6-7.6 5.8V21h15.2v-.8c0-3.2-3.4-5.8-7.6-5.8Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_notifications') }}" aria-label="Notifications">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M12 22a2.3 2.3 0 0 0 2.3-2.3h-4.6A2.3 2.3 0 0 0 12 22Zm7-6.2V11a7 7 0 0 0-5.8-6.9V3a1.2 1.2 0 0 0-2.4 0v1.1A7 7 0 0 0 5 11v4.8L3.4 17.4V19h17.2v-1.6L19 15.8Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_feed') }}" aria-label="Feed">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M4 6h16v2H4V6Zm0 5h16v2H4v-2Zm0 5h10v2H4v-2Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_messages') }}" aria-label="Messages">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M20 4H4a2 2 0 0 0-2 2v14l4-3h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 11H5.2L4 16V6h16v9Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_post_new') }}" aria-label="Nouveau post">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6v-2Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_logout') }}" aria-label="Déconnexion">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M10 17v-2h4V9h-4V7h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4Zm-1-1-5-4 5-4v3h6v2H9v3Z" fill="currentColor"/>
+                            </svg>
+                        </a>
                     {% else %}
-                        <a href="{{ path('app_login') }}">Connexion</a>
-                        <a href="{{ path('app_register') }}">Inscription</a>
+                        <a class="nav-icon" href="{{ path('app_login') }}" aria-label="Connexion">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M14 17v-2h2V9h-2V7h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2ZM11 16l-5-4 5-4v3h6v2h-6v3Z" fill="currentColor"/>
+                            </svg>
+                        </a>
+                        <a class="nav-icon" href="{{ path('app_register') }}" aria-label="Inscription">
+                            <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                                <path d="M12 12.2c2.5 0 4.6-2 4.6-4.5S14.5 3.2 12 3.2 7.4 5.2 7.4 7.7s2.1 4.5 4.6 4.5Zm0 2.2c-4.2 0-7.6 2.6-7.6 5.8V21h10.2v-2H6.8c.5-1.6 2.6-2.6 5.2-2.6 1.1 0 2.1.2 3 .6l.8-1.7c-1.1-.5-2.4-.9-3.8-.9Zm8.5 2.3V15h-1.8v1.5h-1.5v1.8h1.5v1.5h1.8v-1.5H22v-1.8h-1.5Z" fill="currentColor"/>
+                            </svg>
+                        </a>
                     {% endif %}
                 </div>
             </nav>

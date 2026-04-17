@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\PostRepository;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +15,7 @@ final class FeedController extends AbstractController
 {
     #[IsGranted('ROLE_USER')]
     #[Route('/feed', name: 'app_feed')]
-    public function index(PostRepository $postRepository): Response
+    public function index(PostRepository $postRepository, CacheInterface $cache): Response
     {
         $user = $this->getUser();
 
@@ -21,7 +23,14 @@ final class FeedController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $posts = $postRepository->findFeedForUser($user);
+        $version = $cache->get('feed_version', static fn (ItemInterface $item) => 1);
+        $key = 'feed_' . $user->getId() . '_' . $version;
+
+        $posts = $cache->get($key, static function (ItemInterface $item) use ($postRepository, $user) {
+            $item->expiresAfter(300);
+
+            return $postRepository->findFeedForUser($user);
+        });
 
         return $this->render('feed/index.html.twig', [
             'posts' => $posts,

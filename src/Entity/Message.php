@@ -2,40 +2,32 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\NotificationRepository;
+use App\Repository\MessageRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ApiResource()]
-#[ORM\Entity(repositoryClass: NotificationRepository::class)]
-class Notification
+#[ORM\Entity(repositoryClass: MessageRepository::class)]
+class Message
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['notification:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['notification:read'])]
+    private ?User $sender = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
     private ?User $recipient = null;
 
-    #[ORM\Column(length: 50)]
-    #[Groups(['notification:read'])]
-    private ?string $type = null;
-
     #[ORM\Column(type: 'text')]
-    #[Groups(['notification:read'])]
     private ?string $content = null;
 
     #[ORM\Column(options: ['default' => false])]
-    #[Groups(['notification:read'])]
     private bool $isRead = false;
 
     #[ORM\Column]
-    #[Groups(['notification:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
@@ -48,6 +40,18 @@ class Notification
         return $this->id;
     }
 
+    public function getSender(): ?User
+    {
+        return $this->sender;
+    }
+
+    public function setSender(User $sender): static
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
     public function getRecipient(): ?User
     {
         return $this->recipient;
@@ -56,18 +60,6 @@ class Notification
     public function setRecipient(User $recipient): static
     {
         $this->recipient = $recipient;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): static
-    {
-        $this->type = $type;
 
         return $this;
     }
@@ -100,11 +92,5 @@ class Notification
     {
         return $this->createdAt;
     }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
 }
+

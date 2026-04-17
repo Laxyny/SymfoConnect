@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages{% endblock %}
+
+{% block body %}
+    <h1>Messages</h1>
+
+    {% if conversations is empty %}
+        <p class="muted">Aucune conversation.</p>
+    {% endif %}
+
+    {% for c in conversations %}
+        <div class="card">
+            <div class="muted">
+                <a href="{{ path('app_messages_thread', { username: c.user.username }) }}">{{ c.user.username }}</a>
+            </div>
+            <p>{{ c.lastMessage.content }}</p>
+            <div class="muted">{{ c.lastMessage.createdAt|date('d/m/Y H:i') }}</div>
+        </div>
+    {% endfor %}
+{% endblock %}
+

@@ -11,12 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Contracts\Cache\CacheInterface;
 
 final class PostController extends AbstractController
 {
     #[IsGranted('ROLE_USER')]
     #[Route('/post/nouveau', name: 'app_post_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, CacheInterface $cache): Response
     {
         $author = $this->getUser();
 
@@ -33,6 +34,7 @@ final class PostController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($post);
             $entityManager->flush();
+            $cache->delete('feed_version');
 
             $this->addFlash('success', 'Post créé.');
 
