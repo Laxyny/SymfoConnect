@@ -56,23 +56,58 @@
                 {% endif %}
 
                 {% if editForm %}
-                    <details class="dropdown">
-                        <summary class="btn btn-secondary icon-btn" title="Modifier le profil" aria-label="Modifier le profil">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16v4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
-                        </summary>
-                        <div class="dropdown-panel" style="position:absolute;right:0;top:100%;min-width:320px;z-index:20;">
-                            <h3 style="margin:0 0 10px;">Modifier mon profil</h3>
-                            {{ form_start(editForm) }}
-                            {{ form_row(editForm.bio, { label: 'Bio' }) }}
-                            {{ form_row(editForm.avatarUrl, { label: 'URL de l\'avatar' }) }}
-                            <button type="submit" class="btn btn-primary btn-block">Enregistrer</button>
-                            {{ form_end(editForm) }}
-                        </div>
-                    </details>
+                    <a href="#edit-profile" class="btn btn-secondary icon-btn" title="Modifier le profil" aria-label="Modifier le profil">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16v4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    </a>
                 {% endif %}
             </div>
         </div>
     </section>
+
+    {% if editForm %}
+        <details class="card" id="edit-profile" style="padding:0;margin-top:14px;">
+            <summary style="list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:650;">
+                <span style="display:inline-flex;align-items:center;gap:10px;">
+                    <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;color:var(--primary-strong);" aria-hidden="true"><path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16v4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                    Modifier mon profil
+                </span>
+                <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px;color:var(--muted);transition:transform 180ms ease;" class="chevron" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </summary>
+            <div style="padding:0 20px 20px;border-top:1px solid var(--border);">
+                {{ form_start(editForm) }}
+                {{ form_row(editForm.bio, { label: 'Bio' }) }}
+                {{ form_row(editForm.avatarUrl, { label: 'URL de l\'avatar' }) }}
+                <div class="row" style="justify-content:flex-end;margin-top:8px;">
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+                {{ form_end(editForm) }}
+            </div>
+        </details>
+        <style>
+            #edit-profile[open] summary .chevron { transform: rotate(180deg); }
+            #edit-profile > summary::-webkit-details-marker { display: none; }
+            #edit-profile > summary::marker { display: none; }
+            #edit-profile > summary:hover { background: var(--surface-ghost); }
+            #edit-profile[open] > summary { border-bottom: 1px solid var(--border); }
+        </style>
+        <script>
+            (function () {
+                var panel = document.getElementById('edit-profile');
+                if (!panel) return;
+                if (window.location.hash === '#edit-profile') {
+                    panel.open = true;
+                }
+                document.querySelectorAll('a[href="#edit-profile"]').forEach(function (link) {
+                    link.addEventListener('click', function () {
+                        panel.open = true;
+                        setTimeout(function () {
+                            panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 10);
+                    });
+                });
+            })();
+        </script>
+    {% endif %}
 
     <div class="page-header" style="margin-top:28px;">
         <h2 style="margin:0;">Posts</h2>
