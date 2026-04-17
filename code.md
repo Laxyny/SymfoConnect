@@ -28,3 +28,17 @@ php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 
 - Tester: créer un compte sur /register, se connecter sur /login
+
+
+
+#Groups(['post:read']) (A mettre dans l'entité User)
+#Groups(['post:read:id']) (A mettre dans l'entité Post)
+
+
+
+
+
+
+
+
+
