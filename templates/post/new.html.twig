@@ -1,15 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau post{% endblock %}
+{% block title %}Nouveau post · SymfoConnect{% endblock %}
 
 {% block body %}
-    <h1>Nouveau post</h1>
+    <div class="page-header">
+        <div>
+            <h1>Nouveau post</h1>
+            <p class="page-subtitle">Partage une idée, une découverte ou un projet avec la communauté.</p>
+        </div>
+        <a href="{{ path('app_home') }}" class="btn btn-ghost btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 6-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Retour
+        </a>
+    </div>
 
-    <div class="card">
+    <div class="card" style="padding:22px;">
+        <div class="post-head" style="margin-bottom:16px;">
+            <span class="avatar-inline" aria-hidden="true">
+                {% if app.user and app.user.avatarUrl %}
+                    <img src="{{ app.user.avatarUrl }}" alt="">
+                {% elseif app.user %}
+                    {{ app.user.username|slice(0, 1)|upper }}
+                {% endif %}
+            </span>
+            <div class="post-author">
+                <strong>{{ app.user ? app.user.username : 'Moi' }}</strong>
+                <span class="muted" style="font-size:12px;">Publication publique</span>
+            </div>
+        </div>
+
         {{ form_start(form) }}
-        {{ form_row(form.content) }}
-        <button type="submit">Publier</button>
+        {{ form_row(form.content, { label: 'Contenu' }) }}
+        <div class="row" style="justify-content:flex-end;gap:8px;">
+            <a href="{{ path('app_home') }}" class="btn btn-ghost">Annuler</a>
+            <button type="submit" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Publier
+            </button>
+        </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}
-

@@ -1,28 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Notifications{% endblock %}
+{% block title %}Notifications · SymfoConnect{% endblock %}
 
 {% block body %}
-    <h1>Notifications</h1>
+    <div class="page-header">
+        <div>
+            <h1>Notifications</h1>
+            <p class="page-subtitle">Tout ce qui se passe autour de toi.</p>
+        </div>
+    </div>
 
     {% if notifications is empty %}
-        <p class="muted">Aucune notification.</p>
+        <div class="empty">
+            <span class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </span>
+            <h3>Tout est à jour</h3>
+            <p>Aucune notification pour le moment. Reviens plus tard !</p>
+        </div>
     {% endif %}
 
-    {% for n in notifications %}
-        <div class="card">
-            <div class="muted">{{ n.createdAt|date('d/m/Y H:i') }}</div>
-            <p>{{ n.content }}</p>
-            <form method="post" action="{{ path('app_notification_delete', { id: n.id }) }}" class="inline-form">
-                <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_notification' ~ n.id) }}">
-                <button type="submit" class="btn btn-danger" aria-label="Supprimer la notification">
-                    <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false" style="width:16px;height:16px;">
-                        <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm1 7h2v9h-2v-9Zm4 0h2v9h-2v-9ZM6 8h12l-1 13H7L6 8Z" fill="currentColor"/>
-                    </svg>
-                    <span>Supprimer</span>
-                </button>
-            </form>
-        </div>
-    {% endfor %}
+    <div>
+        {% for n in notifications %}
+            <div class="notif-item">
+                <span class="notif-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </span>
+                <div class="notif-body">
+                    <p>{{ n.content }}</p>
+                    <div class="notif-time">{{ n.createdAt|date('d/m/Y · H:i') }}</div>
+                </div>
+                <div class="notif-actions">
+                    <form method="post" action="{{ path('app_notification_delete', { id: n.id }) }}" class="inline-form">
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token('delete_notification' ~ n.id) }}">
+                        <button type="submit" class="btn btn-ghost btn-sm icon-btn" aria-label="Supprimer la notification" title="Supprimer">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
-

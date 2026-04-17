@@ -1,7 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Recherche{% endblock %}
+{% block title %}Recherche · SymfoConnect{% endblock %}
 
 {% block body %}
-    <h1>Recherche</h1>
+    <div class="page-header">
+        <div>
+            <h1>Recherche</h1>
+            <p class="page-subtitle">Trouve des utilisateurs, des posts ou des hashtags.</p>
+        </div>
+    </div>
+
+    <form method="get" class="search-bar">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input type="search" name="q" placeholder="Rechercher..." aria-label="Rechercher">
+        <button type="submit" class="btn btn-primary btn-sm">Rechercher</button>
+    </form>
+
+    <div class="empty" style="margin-top:22px;">
+        <span class="empty-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="m20 20-3-3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <h3>Commence à taper</h3>
+        <p>Les résultats s'afficheront ici dès que tu lanceras une recherche.</p>
+    </div>
 {% endblock %}

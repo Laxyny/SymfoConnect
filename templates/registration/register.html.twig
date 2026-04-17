@@ -1,24 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}S'inscrire{% endblock %}
+{% block title %}Créer un compte · SymfoConnect{% endblock %}
+
+{% block main_class %}auth-wrapper{% endblock %}
 
 {% block body %}
-    <h1>S'inscrire</h1>
+    <div class="auth-card">
+        <div class="auth-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-3.3 3.6-6 8-6 1.2 0 2.3.2 3.3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18 14v6m-3-3h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
 
-    {{ form_errors(registrationForm) }}
+        <h1>Rejoins SymfoConnect</h1>
+        <p class="auth-sub">Crée ton compte en quelques secondes et commence à partager.</p>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.email, {
-            label: 'Email'
-        }) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe',
-        }) }}
-        {{ form_row(registrationForm.agreeTerms, {
-            label: 'Accepter les conditions d\'utilisation'
-        }) }}
+        {{ form_errors(registrationForm) }}
 
-        <button type="submit">Créer mon compte</button>
-    {{ form_end(registrationForm) }}
+        {{ form_start(registrationForm) }}
+            {{ form_row(registrationForm.username) }}
+            {{ form_row(registrationForm.email, { label: 'Email' }) }}
+            {{ form_row(registrationForm.plainPassword, { label: 'Mot de passe' }) }}
+            {{ form_row(registrationForm.agreeTerms, { label: 'J\'accepte les conditions d\'utilisation' }) }}
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:8px;">
+                Créer mon compte
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        {{ form_end(registrationForm) }}
+
+        <div class="auth-footer">
+            Déjà inscrit ? <a href="{{ path('app_login') }}">Se connecter</a>
+        </div>
+    </div>
 {% endblock %}

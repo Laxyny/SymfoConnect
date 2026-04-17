@@ -1,27 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion{% endblock %}
+{% block title %}Connexion · SymfoConnect{% endblock %}
+
+{% block main_class %}auth-wrapper{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="flash flash-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+    <div class="auth-card">
+        <div class="auth-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </div>
+
+        <h1>Bon retour parmi nous</h1>
+        <p class="auth-sub">Connecte-toi pour retrouver ton fil et tes conversations.</p>
 
         {% if app.user %}
-            <div class="card">
-                <p>Connecté en tant que {{ app.user.username }}</p>
-                <p><a href="{{ path('app_logout') }}">Se déconnecter</a></p>
+            <div class="flash flash-success">
+                Déjà connecté en tant que <strong>{{ app.user.username }}</strong>. <a href="{{ path('app_logout') }}">Se déconnecter</a>
             </div>
         {% endif %}
 
-        <h1>Connexion</h1>
-        <label for="username">Email</label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" required autofocus>
-        <label for="password">Mot de passe</label>
-        <input type="password" name="_password" id="password" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+        <form method="post">
+            {% if error %}
+                <div class="flash flash-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-        <button type="submit">Se connecter</button>
-    </form>
+            <div class="form-row">
+                <label for="username">Email</label>
+                <input type="email" value="{{ last_username }}" name="_username" id="username" autocomplete="email" placeholder="tu@exemple.com" required autofocus>
+            </div>
+
+            <div class="form-row">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="_password" id="password" autocomplete="current-password" placeholder="••••••••" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="btn btn-primary btn-lg btn-block" style="margin-top:10px;">
+                Se connecter
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14m0 0-5-5m5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            Pas encore de compte ? <a href="{{ path('app_register') }}">Créer un compte</a>
+        </div>
+    </div>
 {% endblock %}

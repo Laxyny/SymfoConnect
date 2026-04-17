@@ -1,22 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Messages{% endblock %}
+{% block title %}Messages · SymfoConnect{% endblock %}
 
 {% block body %}
-    <h1>Messages</h1>
+    <div class="page-header">
+        <div>
+            <h1>Messages</h1>
+            <p class="page-subtitle">Tes conversations récentes.</p>
+        </div>
+    </div>
 
     {% if conversations is empty %}
-        <p class="muted">Aucune conversation.</p>
+        <div class="empty">
+            <span class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8l-4 4V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Aucune conversation</h3>
+            <p>Envoie un message depuis le profil d'un utilisateur pour démarrer une conversation.</p>
+        </div>
     {% endif %}
 
-    {% for c in conversations %}
-        <div class="card">
-            <div class="muted">
-                <a href="{{ path('app_messages_thread', { username: c.user.username }) }}">{{ c.user.username }}</a>
-            </div>
-            <p>{{ c.lastMessage.content }}</p>
-            <div class="muted">{{ c.lastMessage.createdAt|date('d/m/Y H:i') }}</div>
-        </div>
-    {% endfor %}
+    <div class="conversation-list">
+        {% for c in conversations %}
+            <a class="conversation-item" href="{{ path('app_messages_thread', { username: c.user.username }) }}">
+                <span class="avatar-inline" aria-hidden="true">
+                    {% if c.user.avatarUrl %}
+                        <img src="{{ c.user.avatarUrl }}" alt="">
+                    {% else %}
+                        {{ c.user.username|slice(0, 1)|upper }}
+                    {% endif %}
+                </span>
+                <div class="conversation-body">
+                    <div class="conversation-top">
+                        <span class="conversation-user">{{ c.user.username }}</span>
+                        <span class="conversation-time">{{ c.lastMessage.createdAt|date('d/m/Y H:i') }}</span>
+                    </div>
+                    <p class="conversation-preview">{{ c.lastMessage.content }}</p>
+                </div>
+                <svg viewBox="0 0 24 24" fill="none" style="width:18px;height:18px;color:var(--muted);flex-shrink:0;" aria-hidden="true"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+        {% endfor %}
+    </div>
 {% endblock %}
-

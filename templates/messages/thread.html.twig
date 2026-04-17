@@ -1,34 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conversation{% endblock %}
+{% block title %}Conversation avec {{ other.username }}{% endblock %}
 
 {% block body %}
-    <h1>Conversation avec {{ other.username }}</h1>
+    <div class="row" style="margin-bottom:10px;">
+        <a href="{{ path('app_messages') }}" class="btn btn-ghost btn-sm">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 6-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Toutes les conversations
+        </a>
+    </div>
+
+    <div class="thread-header">
+        <a class="avatar-inline" href="{{ path('app_profile_show', { username: other.username }) }}" aria-hidden="true" style="width:48px;height:48px;font-size:16px;">
+            {% if other.avatarUrl %}
+                <img src="{{ other.avatarUrl }}" alt="">
+            {% else %}
+                {{ other.username|slice(0, 1)|upper }}
+            {% endif %}
+        </a>
+        <div class="thread-meta">
+            <h1>{{ other.username }}</h1>
+            <p class="muted">Conversation privée</p>
+        </div>
+    </div>
 
     {% if thread is empty %}
-        <p class="muted">Aucun message pour le moment.</p>
+        <div class="empty">
+            <span class="empty-icon">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H8l-4 4V6a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </span>
+            <h3>Aucun message</h3>
+            <p>Envoie un premier message pour démarrer la conversation.</p>
+        </div>
     {% endif %}
 
-    {% for m in thread %}
-        <div class="card">
-            <div class="muted">
-                <strong>{{ m.sender.username }}</strong>
-                <span>·</span>
-                <span>{{ m.createdAt|date('d/m/Y H:i') }}</span>
-                {% if m.recipient.id == app.user.id and not m.isRead %}
-                    <span>·</span>
-                    <span>non lu</span>
+    <div class="thread">
+        {% for m in thread %}
+            {% set isMine = m.sender.id == app.user.id %}
+            <div class="bubble-row {{ isMine ? 'is-mine' : '' }}">
+                {% if not isMine %}
+                    <span class="avatar-inline" aria-hidden="true" style="width:30px;height:30px;font-size:12px;">
+                        {% if m.sender.avatarUrl %}
+                            <img src="{{ m.sender.avatarUrl }}" alt="">
+                        {% else %}
+                            {{ m.sender.username|slice(0, 1)|upper }}
+                        {% endif %}
+                    </span>
                 {% endif %}
+                <div>
+                    <div class="bubble">{{ m.content }}</div>
+                    <div class="bubble-meta">
+                        <span>{{ m.createdAt|date('d/m/Y H:i') }}</span>
+                        {% if m.recipient.id == app.user.id and not m.isRead %}
+                            <span class="badge" style="padding:1px 8px;font-size:10px;">non lu</span>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <p>{{ m.content }}</p>
-        </div>
-    {% endfor %}
+        {% endfor %}
+    </div>
 
-    <div class="card">
+    <div class="reply-box">
         {{ form_start(form) }}
-        {{ form_row(form.content, { label: 'Répondre' }) }}
-        <button type="submit">Envoyer</button>
+        {{ form_row(form.content, { label: 'Ton message' }) }}
+        <div class="row" style="justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary">
+                Envoyer
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16m0 0-6-6m6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}
-
